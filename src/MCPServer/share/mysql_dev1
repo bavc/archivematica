@@ -36,3 +36,16 @@ UPDATE MicroServiceChainLinks SET defaultNextChainLink = @MoveSIPToFailedLink WH
 
 -- set zero exit code --
 UPDATE MicroServiceChainLinksExitCodes SET nextMicroServiceChainLink = @NextMicroServiceChainLink where microServiceChainLink = @XLink;
+
+
+-- Add new watched directory for compressionAIP decisions, and chain for it to point to
+SET @WatchedDirectory = 'dfb22984-c6eb-4c5d-939c-0df43559033e';
+SET @MicroServiceChains = '27cf6ca9-11b4-41ac-9014-f8018bcbad5e';
+
+INSERT INTO MicroServiceChains (pk, startingLink, description)
+    VALUES (@MicroServiceChains, '01d64f58-8295-4b7b-9cab-8f1b153a504f', 'Compress AIP');
+
+INSERT INTO WatchedDirectories (pk, watchedDirectoryPath, chain, onlyActOnDirectories, expectedType)
+    VALUES (@WatchedDirectory, '%watchDirectoryPath%workFlowDecisions/compressionAIPDecisions/', @MicroServiceChains, True, '76e66677-40e6-41da-be15-709afb334936');
+
+
